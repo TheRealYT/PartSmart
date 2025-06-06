@@ -82,6 +82,10 @@ class LoginFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
             binding.loginButton.isEnabled = !loading
+            binding.emailInput.isEnabled = !loading
+            binding.passwordInput.isEnabled = !loading
+            binding.switchToRegister.isEnabled = !loading
+            binding.progressBar.visibility = if (loading) View.VISIBLE else View.INVISIBLE
         }
     }
 
