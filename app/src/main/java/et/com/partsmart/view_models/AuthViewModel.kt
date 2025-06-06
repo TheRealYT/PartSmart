@@ -13,6 +13,10 @@ import et.com.partsmart.models.LoginRequest
 import et.com.partsmart.models.RegisterRequest
 import kotlinx.coroutines.launch
 
+private const val PREF_KEY_LOGGED_IN = "logged_in"
+
+private const val PREF_KEY_TOKEN = "token"
+
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val prefs = application.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
 
@@ -58,7 +62,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val response = Repository.login(LoginRequest(username, password))
 
                 if (response.isSuccessful) {
-                    prefs.edit().putBoolean("logged_in", true).apply()
+                    prefs.edit().putBoolean(PREF_KEY_LOGGED_IN, true).apply()
+                    prefs.edit().putString(PREF_KEY_TOKEN, response.body()?.token).apply()
                     _isLoggedIn.value = true
                 } else {
                     _errorMessage.value =
@@ -79,7 +84,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     // check if the user has a stored login session
     fun hasLoginSession(): Boolean {
-        return prefs.getBoolean("logged_in", false)
+        return prefs.getBoolean(PREF_KEY_LOGGED_IN, false)
+    }
+
+    fun getSessionToken(): String? {
+        return prefs.getString(PREF_KEY_TOKEN, null)
     }
 
     fun logout() {

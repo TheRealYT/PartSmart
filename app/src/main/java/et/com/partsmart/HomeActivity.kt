@@ -20,8 +20,17 @@ class HomeActivity : AppCompatActivity() {
     private val authViewModel: AuthViewModel by viewModels() {
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     }
+    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val token = authViewModel.getSessionToken()
+        if (token == null) {
+            authViewModel.logout()
+            return
+        }
+
+        this.token = token // token to access endpoints
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityHomeBinding.inflate(layoutInflater)
@@ -49,10 +58,12 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+
             R.id.menu_toggle_dark -> {
                 toggleTheme()
                 return true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -67,6 +78,7 @@ class HomeActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 editor.putInt("theme", AppCompatDelegate.MODE_NIGHT_NO)
             }
+
             Configuration.UI_MODE_NIGHT_NO -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 editor.putInt("theme", AppCompatDelegate.MODE_NIGHT_YES)
