@@ -1,5 +1,6 @@
 package et.com.partsmart
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -67,7 +68,10 @@ class LoginFragment : Fragment() {
                     getString(R.string.login_successful), Snackbar.LENGTH_LONG)
                 snackBar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark))
                 snackBar.show()
-                // TODO: go to home
+
+                val intent = Intent(requireContext(), HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
             }
         }
 

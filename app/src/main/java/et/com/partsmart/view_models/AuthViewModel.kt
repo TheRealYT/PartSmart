@@ -1,6 +1,7 @@
 package et.com.partsmart.view_models
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,9 @@ import et.com.partsmart.models.RegisterRequest
 import kotlinx.coroutines.launch
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
+    private val prefs = application.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+
+    // state variables
     private val _isLoggedIn = MutableLiveData(false)
     val isLoggedIn: LiveData<Boolean> get() = _isLoggedIn
 
@@ -54,6 +58,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val response = Repository.login(LoginRequest(username, password))
 
                 if (response.isSuccessful) {
+                    prefs.edit().putBoolean("logged_in", true).apply()
                     _isLoggedIn.value = true
                 } else {
                     _errorMessage.value =
@@ -70,5 +75,10 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     fun clearError() {
         _errorMessage.value = null
+    }
+
+    // check if the user has a stored login session
+    fun hasLoginSession(): Boolean {
+        return prefs.getBoolean("logged_in", false)
     }
 }
