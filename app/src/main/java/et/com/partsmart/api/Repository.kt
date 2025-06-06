@@ -1,6 +1,7 @@
 package et.com.partsmart.api
 
 import et.com.partsmart.models.LoginRequest
+import et.com.partsmart.models.RegisterRequest
 import et.com.partsmart.models.User
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -16,5 +17,9 @@ object Repository {
 
     suspend fun login(data: LoginRequest): Response<User> {
         return api.login(data)
+    }
+
+    suspend fun register(data: RegisterRequest): Response<Void> {
+        return api.register(data)
     }
 }

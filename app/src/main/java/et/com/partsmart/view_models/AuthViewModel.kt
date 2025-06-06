@@ -1,16 +1,16 @@
 package et.com.partsmart.view_models
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import et.com.partsmart.R
 import et.com.partsmart.api.Repository
+import et.com.partsmart.api.handleException
 import et.com.partsmart.models.LoginRequest
+import et.com.partsmart.models.RegisterRequest
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _isLoggedIn = MutableLiveData(false)
@@ -22,9 +22,30 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _errorMessage = MutableLiveData<String?>(null)
     val errorMessage: LiveData<String?> get() = _errorMessage
 
-    fun login(username: String, password: String) {
-        Log.d("LoginViewModel", "login() called with $username")
+    private val _isRegistered = MutableLiveData(false)
+    val isRegistered: LiveData<Boolean> get() = _isRegistered
 
+    fun register(name: String, email: String, password: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+
+            try {
+                val response = Repository.register(RegisterRequest(name, email, password))
+                if (response.isSuccessful) {
+                    _isRegistered.value = true
+                } else {
+                    _errorMessage.value = getApplication<Application>().getString(R.string.registration_failed)
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = handleException(e, getApplication())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun login(username: String, password: String) {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
@@ -38,14 +59,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                     _errorMessage.value =
                         getApplication<Application>().getString(R.string.incorrect_credentials)
                 }
-            } catch (e: HttpException) {
-                _errorMessage.value =
-                    getApplication<Application>().getString(R.string.network_error)
-                Log.e("LoginViewModel", "HttpException: ${e.message}")
             } catch (e: Exception) {
-                _errorMessage.value =
-                    getApplication<Application>().getString(R.string.unknown_error)
-                Log.e("LoginViewModel", "Exception: ${e.message}")
+                _errorMessage.value = handleException(e, getApplication())
             } finally {
                 _isLoggedIn.value = false
                 _isLoading.value = false
@@ -57,4 +72,3 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         _errorMessage.value = null
     }
 }
-

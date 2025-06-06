@@ -49,4 +49,7 @@
     <string name="invalid_email">Invalid email</string>
     <string name="password_min_6">Password must be at least 6 characters</string>
     <string name="login_successful">Login successful</string>
+    <string name="invalid_name">Invalid name</string>
+    <string name="registration_failed">Registration failed</string>
+    <string name="registered_successfully">Registered successfully</string>
 </resources>
