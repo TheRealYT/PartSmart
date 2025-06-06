@@ -48,12 +48,12 @@ class LoginFragment : Fragment() {
             val password = binding.passwordInput.text.toString().trim()
 
             if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.emailInput.error = "Invalid email"
+                binding.emailInput.error = getString(R.string.invalid_email)
                 return@setOnClickListener
             }
 
             if (password.length < 6) {
-                binding.passwordInput.error = "Password must be at least 6 characters"
+                binding.passwordInput.error = getString(R.string.password_min_6)
                 return@setOnClickListener
             }
 
@@ -63,7 +63,8 @@ class LoginFragment : Fragment() {
 
         viewModel.isLoggedIn.observe(viewLifecycleOwner) { success ->
             if (success) {
-                val snackBar = Snackbar.make(requireView(), "Login successful", Snackbar.LENGTH_LONG)
+                val snackBar = Snackbar.make(requireView(),
+                    getString(R.string.login_successful), Snackbar.LENGTH_LONG)
                 snackBar.view.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark))
                 snackBar.show()
                 // TODO: go to home

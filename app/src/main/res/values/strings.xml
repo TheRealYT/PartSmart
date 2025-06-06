@@ -43,4 +43,10 @@
     <string name="register">Register</string>
     <string name="full_name">Full Name</string>
     <string name="have_an_account_login">Already have an account? Login</string>
+    <string name="unknown_error">Unknown error occurred</string>
+    <string name="network_error">Network connection failed.</string>
+    <string name="incorrect_credentials">Incorrect email or password</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="password_min_6">Password must be at least 6 characters</string>
+    <string name="login_successful">Login successful</string>
 </resources>

@@ -1,15 +1,18 @@
 package et.com.partsmart.view_models
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import et.com.partsmart.R
 import et.com.partsmart.api.Repository
 import et.com.partsmart.models.LoginRequest
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
-class AuthViewModel : ViewModel() {
+class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val _isLoggedIn = MutableLiveData(false)
     val isLoggedIn: LiveData<Boolean> get() = _isLoggedIn
 
@@ -32,10 +35,16 @@ class AuthViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     _isLoggedIn.value = true
                 } else {
-                    _errorMessage.value = "Login failed: ${response.code()}"
+                    _errorMessage.value =
+                        getApplication<Application>().getString(R.string.incorrect_credentials)
                 }
+            } catch (e: HttpException) {
+                _errorMessage.value =
+                    getApplication<Application>().getString(R.string.network_error)
+                Log.e("LoginViewModel", "HttpException: ${e.message}")
             } catch (e: Exception) {
-                _errorMessage.value = "Error: ${e.localizedMessage}"
+                _errorMessage.value =
+                    getApplication<Application>().getString(R.string.unknown_error)
                 Log.e("LoginViewModel", "Exception: ${e.message}")
             } finally {
                 _isLoggedIn.value = false
