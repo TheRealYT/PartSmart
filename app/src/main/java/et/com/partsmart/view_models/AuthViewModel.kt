@@ -81,4 +81,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun hasLoginSession(): Boolean {
         return prefs.getBoolean("logged_in", false)
     }
+
+    fun logout() {
+        prefs.edit().clear().apply()
+    }
 }
