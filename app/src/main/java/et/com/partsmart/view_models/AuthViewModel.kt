@@ -53,13 +53,13 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun login(username: String, password: String) {
+    fun login(email: String, password: String) {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
 
             try {
-                val response = Repository.login(LoginRequest(username, password))
+                val response = Repository.login(LoginRequest(email, password))
 
                 if (response.isSuccessful) {
                     prefs.edit().putBoolean(PREF_KEY_LOGGED_IN, true).apply()
