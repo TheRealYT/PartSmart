@@ -1,12 +1,14 @@
 package et.com.partsmart
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +49,30 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.menu_toggle_dark -> {
+                toggleTheme()
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun toggleTheme() {
+        val prefs = getSharedPreferences("settings", MODE_PRIVATE)
+        val currentMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        val editor = prefs.edit()
+
+        when (currentMode) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                editor.putInt("theme", AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putInt("theme", AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
+
+        editor.apply()
     }
 }
