@@ -10,10 +10,13 @@ import et.com.partsmart.api.Repository
 import et.com.partsmart.api.handleException
 import et.com.partsmart.models.LoginRequest
 import et.com.partsmart.models.RegisterRequest
+import et.com.partsmart.models.User
 import kotlinx.coroutines.launch
 
+private const val PREF_KEY_USERID = "user_id"
+private const val PREF_KEY_USERNAME = "username"
+private const val PREF_KEY_EMAIL = "email"
 private const val PREF_KEY_LOGGED_IN = "logged_in"
-
 private const val PREF_KEY_TOKEN = "token"
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
@@ -62,8 +65,13 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val response = Repository.login(LoginRequest(email, password))
 
                 if (response.isSuccessful) {
+                    val body = response.body()
+
                     prefs.edit()
                         .putBoolean(PREF_KEY_LOGGED_IN, true)
+                        .putString(PREF_KEY_USERID, body!!.user.id)
+                        .putString(PREF_KEY_USERNAME, body.user.username)
+                        .putString(PREF_KEY_EMAIL, body.user.email)
                         .putString(PREF_KEY_TOKEN, response.headers()["Set-Cookie"]).apply()
                     _isLoggedIn.value = true
                 } else {
@@ -91,6 +99,19 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     fun getSessionToken(): String? {
         return prefs.getString(PREF_KEY_TOKEN, null)
     }
+
+    fun getUser(): User? {
+        val id = prefs.getString(PREF_KEY_USERID, null) ?: return null
+        val username = prefs.getString(PREF_KEY_USERNAME, null) ?: return null
+        val email = prefs.getString(PREF_KEY_EMAIL, null) ?: return null
+
+        return User(
+            id = id,
+            username = username,
+            email = email
+        )
+    }
+
 
     fun logout() {
         prefs.edit().clear().apply()
