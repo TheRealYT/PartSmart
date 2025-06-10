@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import et.com.partsmart.databinding.ActivityHomeBinding
+import et.com.partsmart.models.User
 import et.com.partsmart.view_models.AuthViewModel
 
 class HomeActivity : AppCompatActivity() {
@@ -21,15 +22,19 @@ class HomeActivity : AppCompatActivity() {
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     }
     private lateinit var token: String
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val token = authViewModel.getSessionToken()
-        if (token == null) {
+        val user = authViewModel.getUser()
+
+        if (token == null || user == null) {
             authViewModel.logout()
             return
         }
 
         this.token = token // token to access endpoints
+        this.user = user
 
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
