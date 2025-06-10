@@ -6,7 +6,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import et.com.partsmart.R
 import et.com.partsmart.api.Repository
 import et.com.partsmart.api.handleException
 import et.com.partsmart.models.LoginRequest
@@ -43,7 +42,8 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 if (response.isSuccessful) {
                     _isRegistered.value = true
                 } else {
-                    _errorMessage.value = getApplication<Application>().getString(R.string.registration_failed)
+                    _errorMessage.value =
+                        Repository.getErrorMessage(response.errorBody(), getApplication())
                 }
             } catch (e: Exception) {
                 _errorMessage.value = handleException(e, getApplication())
@@ -63,11 +63,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
                 if (response.isSuccessful) {
                     prefs.edit().putBoolean(PREF_KEY_LOGGED_IN, true).apply()
-                    prefs.edit().putString(PREF_KEY_TOKEN, response.body()?.token).apply()
+                    prefs.edit().putString(PREF_KEY_TOKEN, response.headers()["Set-Cookie"]).apply()
                     _isLoggedIn.value = true
                 } else {
                     _errorMessage.value =
-                        getApplication<Application>().getString(R.string.incorrect_credentials)
+                        Repository.getErrorMessage(response.errorBody(), getApplication())
                 }
             } catch (e: Exception) {
                 _errorMessage.value = handleException(e, getApplication())
