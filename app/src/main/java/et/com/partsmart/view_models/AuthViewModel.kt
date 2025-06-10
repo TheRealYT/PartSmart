@@ -62,8 +62,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 val response = Repository.login(LoginRequest(email, password))
 
                 if (response.isSuccessful) {
-                    prefs.edit().putBoolean(PREF_KEY_LOGGED_IN, true).apply()
-                    prefs.edit().putString(PREF_KEY_TOKEN, response.headers()["Set-Cookie"]).apply()
+                    prefs.edit()
+                        .putBoolean(PREF_KEY_LOGGED_IN, true)
+                        .putString(PREF_KEY_TOKEN, response.headers()["Set-Cookie"]).apply()
                     _isLoggedIn.value = true
                 } else {
                     _errorMessage.value =
