@@ -6,7 +6,6 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -67,7 +66,11 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
         }
 
         binding.fab.setOnClickListener {
-            Toast.makeText(this, "FAB clicked!", Toast.LENGTH_SHORT).show()
+            CartDialogFragment.show(supportFragmentManager)
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
+            AccountDialogFragment.show(supportFragmentManager)
         }
 
         binding.appBarLayout.addOnOffsetChangedListener { appBar, verticalOffset ->
@@ -236,5 +239,20 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
 
         binding.searchInputLayout.visibility = android.view.View.VISIBLE
         binding.fragmentTopItems.visibility = android.view.View.VISIBLE
+    }
+
+    override fun onNavigateUp(): Boolean {
+        val currentFragment = supportFragmentManager.findFragmentById(binding.fragmentItems.id)
+        if (currentFragment is OrdersFragment || currentFragment is MyProductsFragment) {
+            supportFragmentManager.commit {
+                replace(binding.fragmentItems.id, ItemsFragment())
+            }
+            binding.bottomNav.selectedItemId = R.id.nav_home
+            show()
+
+            return false
+        }
+
+        return super.onNavigateUp()
     }
 }
