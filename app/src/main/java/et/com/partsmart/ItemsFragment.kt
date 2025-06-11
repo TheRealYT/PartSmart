@@ -27,7 +27,9 @@ class ItemsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = GridAdapter(emptyList())
+        adapter = GridAdapter(requireContext(), emptyList()) {
+            (activity as HomeActivity).updateCartCount()
+        }
 
         binding.gridList.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.gridList.adapter = adapter

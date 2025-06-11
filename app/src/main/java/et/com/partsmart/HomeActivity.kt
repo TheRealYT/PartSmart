@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.content.res.AppCompatResources
@@ -17,9 +18,13 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import et.com.partsmart.api.Repository
 import et.com.partsmart.databinding.ActivityHomeBinding
 import et.com.partsmart.models.User
+import et.com.partsmart.storage.CartDBHelper
 import et.com.partsmart.view_models.AuthViewModel
 import kotlin.math.abs
 
@@ -36,6 +41,17 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
     }
     private lateinit var token: String
     internal lateinit var user: User
+    private lateinit var badgeDrawable: BadgeDrawable
+
+    @OptIn(ExperimentalBadgeUtils::class)
+    internal fun updateCartCount() {
+        val count = CartDBHelper(this).getCartCount()
+        badgeDrawable = BadgeDrawable.create(this)
+        badgeDrawable.number = count
+        badgeDrawable.isVisible = count > 0
+
+        BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.fab)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Repository.init(this)
@@ -146,6 +162,13 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
             if (onBack()) {
                 finish()
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.fab.post {
+            updateCartCount()
         }
     }
 
