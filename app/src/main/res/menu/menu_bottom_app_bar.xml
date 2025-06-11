@@ -4,19 +4,19 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/nav_home_selector"
         android:title="@string/nav_home"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_orders"
-        android:icon="@drawable/baseline_receipt_24"
+        android:icon="@drawable/nav_orders_selector"
         android:title="@string/nav_orders"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_products"
-        android:icon="@drawable/baseline_inventory_24"
+        android:icon="@drawable/nav_products_selector"
         android:title="@string/nav_my_products"
         app:showAsAction="ifRoom" />
 
