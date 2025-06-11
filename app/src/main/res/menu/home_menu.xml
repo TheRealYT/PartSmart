@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_toggle_dark"
-        android:title="@string/toggle_dark_mode" />
+        android:id="@+id/menu_change_theme"
+        android:title="@string/change_theme">
+        <menu>
+            <item
+                android:id="@+id/menu_theme_dark"
+                android:title="@string/theme_dark" />
+
+            <item
+                android:id="@+id/menu_theme_light"
+                android:title="@string/theme_light" />
+
+            <item
+                android:id="@+id/menu_theme_system"
+                android:title="@string/theme_system" />
+        </menu>
+    </item>
     <group>
         <item
             android:id="@+id/menu_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:title="@string/logout" />
     </group>
 </menu>

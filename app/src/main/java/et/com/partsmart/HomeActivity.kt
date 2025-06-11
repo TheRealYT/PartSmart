@@ -1,8 +1,8 @@
 package et.com.partsmart
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -11,6 +11,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -104,8 +106,18 @@ class HomeActivity : AppCompatActivity() {
                 true
             }
 
-            R.id.menu_toggle_dark -> {
-                toggleTheme()
+            R.id.menu_theme_dark -> {
+                changeTheme(Theme.Dark)
+                return true
+            }
+
+            R.id.menu_theme_light -> {
+                changeTheme(Theme.Light)
+                return true
+            }
+
+            R.id.menu_theme_system -> {
+                changeTheme(Theme.System)
                 return true
             }
 
@@ -113,23 +125,53 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun toggleTheme() {
-        val prefs = getSharedPreferences("settings", MODE_PRIVATE)
-        val currentMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val editor = prefs.edit()
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val themePref = getSharedPreferences("settings", MODE_PRIVATE)
+            .getInt("theme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
-        when (currentMode) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                editor.putInt("theme", AppCompatDelegate.MODE_NIGHT_NO)
-            }
+        // Hide all check icons first
+        menu.findItem(R.id.menu_theme_dark).icon = null
+        menu.findItem(R.id.menu_theme_light).icon = null
+        menu.findItem(R.id.menu_theme_system).icon = null
 
-            Configuration.UI_MODE_NIGHT_NO -> {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                editor.putInt("theme", AppCompatDelegate.MODE_NIGHT_YES)
-            }
+        val typedValue = TypedValue()
+        theme.resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)
+        val iconColor = ContextCompat.getColor(this, typedValue.resourceId)
+
+        val checkIcon = AppCompatResources.getDrawable(this, R.drawable.baseline_check_24)?.apply {
+            setTint(iconColor)
         }
 
+        when (themePref) {
+            AppCompatDelegate.MODE_NIGHT_YES ->
+                menu.findItem(R.id.menu_theme_dark).icon = checkIcon
+            AppCompatDelegate.MODE_NIGHT_NO ->
+                menu.findItem(R.id.menu_theme_light).icon = checkIcon
+            else ->
+                menu.findItem(R.id.menu_theme_system).icon = checkIcon
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    private enum class Theme {
+        Dark,
+        Light,
+        System
+    }
+
+    private fun changeTheme(theme: Theme) {
+        val prefs = getSharedPreferences("settings", MODE_PRIVATE)
+        val editor = prefs.edit()
+
+        val mode = when (theme) {
+            Theme.Dark -> AppCompatDelegate.MODE_NIGHT_YES
+            Theme.Light -> AppCompatDelegate.MODE_NIGHT_NO
+            Theme.System -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+
+        AppCompatDelegate.setDefaultNightMode(mode)
+        editor.putInt("theme", mode)
         editor.apply()
     }
 }

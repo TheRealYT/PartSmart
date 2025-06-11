@@ -53,11 +53,14 @@
     <string name="registration_failed">Registration failed</string>
     <string name="registered_successfully">Registered successfully</string>
     <string name="logout">Logout</string>
-    <string name="toggle_dark_mode">Toggle Dark Mode</string>
+    <string name="change_theme">Change Theme</string>
     <string name="fab_cart">Cart</string>
     <string name="account">Account</string>
     <string name="search">Search</string>
     <string name="nav_home">Home</string>
     <string name="nav_orders">Orders</string>
     <string name="nav_my_products">My Products</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_system">System</string>
 </resources>
