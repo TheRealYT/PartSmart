@@ -16,20 +16,11 @@
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:title="">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/horizontalList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:paddingStart="8dp"
-                android:paddingTop="?attr/actionBarSize"
-                android:paddingEnd="8dp"
-                android:paddingBottom="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentTopItems"
+                android:name="et.com.partsmart.TopItemsFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -77,13 +68,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gridList"
-                android:layout_width="0dp"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragmentItems"
+                android:name="et.com.partsmart.ItemsFragment"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:paddingBottom="80dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

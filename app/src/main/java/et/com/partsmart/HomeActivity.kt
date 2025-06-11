@@ -17,9 +17,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import et.com.partsmart.databinding.ActivityHomeBinding
 import et.com.partsmart.models.CardItem
@@ -59,34 +56,6 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setSupportActionBar(binding.toolbar)
-        val horizontalRecycler = binding.horizontalList
-        val gridRecycler = binding.gridList
-
-        horizontalRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        gridRecycler.layoutManager = GridLayoutManager(this, 2)
-
-        val cards = listOf(
-            CardItem("Featured", "Top Pick"),
-            CardItem("Trending", "Hot Now"),
-            CardItem("Recommended", "For You"),
-            CardItem("New", "Just Dropped")
-        )
-
-        val gridItems = listOf(
-            GridItem("Item A"),
-            GridItem("Item B"),
-            GridItem("Item C"),
-            GridItem("Item D"),
-            GridItem("Item E"),
-            GridItem("Item F")
-        )
-
-        horizontalRecycler.adapter = CardAdapter(cards)
-        gridRecycler.adapter = GridAdapter(gridItems)
-
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(horizontalRecycler)
 
         binding.fab.setOnClickListener {
             Toast.makeText(this, "FAB clicked!", Toast.LENGTH_SHORT).show()
