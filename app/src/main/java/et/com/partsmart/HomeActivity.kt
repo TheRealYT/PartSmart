@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
+import et.com.partsmart.api.Repository
 import et.com.partsmart.databinding.ActivityHomeBinding
 import et.com.partsmart.models.User
 import et.com.partsmart.view_models.AuthViewModel
@@ -34,9 +35,11 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
     }
     private lateinit var token: String
-    private lateinit var user: User
+    internal lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Repository.init(this)
+
         val token = authViewModel.getSessionToken()
         val user = authViewModel.getUser()
 
@@ -68,6 +71,10 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
 
         binding.fab.setOnClickListener {
             CartDialogFragment.show(supportFragmentManager)
+        }
+
+        binding.fabProduct.setOnClickListener {
+            UploadProductFragment.show(supportFragmentManager)
         }
 
         binding.toolbar.setNavigationOnClickListener {

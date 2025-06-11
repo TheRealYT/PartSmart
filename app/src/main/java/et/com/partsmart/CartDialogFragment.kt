@@ -22,7 +22,7 @@ class CartDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return layoutInflater.inflate(R.layout.cart, container, false)
+        return layoutInflater.inflate(R.layout.fragment_cart, container, false)
     }
 
     override fun onStart() {

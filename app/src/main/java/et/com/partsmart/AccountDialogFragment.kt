@@ -22,7 +22,7 @@ class AccountDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return layoutInflater.inflate(R.layout.account, container, false)
+        return layoutInflater.inflate(R.layout.fragment_account, container, false)
     }
 
     override fun onStart() {

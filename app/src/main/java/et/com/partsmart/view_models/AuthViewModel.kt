@@ -13,14 +13,16 @@ import et.com.partsmart.models.RegisterRequest
 import et.com.partsmart.models.User
 import kotlinx.coroutines.launch
 
-private const val PREF_KEY_USERID = "user_id"
-private const val PREF_KEY_USERNAME = "username"
-private const val PREF_KEY_EMAIL = "email"
-private const val PREF_KEY_LOGGED_IN = "logged_in"
-private const val PREF_KEY_TOKEN = "token"
+internal const val PREF_KEY_USERID = "user_id"
+internal const val PREF_KEY_USERNAME = "username"
+internal const val PREF_KEY_EMAIL = "email"
+internal const val PREF_KEY_LOGGED_IN = "logged_in"
+internal const val PREF_KEY_TOKEN = "token"
+
+internal const val PREF_AUTH_KEY = "auth_prefs"
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
-    private val prefs = application.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+    private val prefs = application.getSharedPreferences(PREF_AUTH_KEY, Context.MODE_PRIVATE)
 
     // state variables
     private val _isLoggedIn = MutableLiveData(false)
