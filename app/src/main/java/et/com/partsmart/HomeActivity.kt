@@ -15,13 +15,20 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import et.com.partsmart.databinding.ActivityHomeBinding
 import et.com.partsmart.models.User
 import et.com.partsmart.view_models.AuthViewModel
 import kotlin.math.abs
 
-class HomeActivity : AppCompatActivity() {
+interface ManageAppBar {
+    fun hide(title: String)
+
+    fun show()
+}
+
+class HomeActivity : AppCompatActivity(), ManageAppBar {
     private lateinit var binding: ActivityHomeBinding
     private val authViewModel: AuthViewModel by viewModels() {
         ViewModelProvider.AndroidViewModelFactory.getInstance(application)
@@ -52,6 +59,12 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setSupportActionBar(binding.toolbar)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                replace(binding.fragmentItems.id, ItemsFragment())
+            }
+        }
 
         binding.fab.setOnClickListener {
             Toast.makeText(this, "FAB clicked!", Toast.LENGTH_SHORT).show()
@@ -85,6 +98,34 @@ class HomeActivity : AppCompatActivity() {
             }
 
             binding.searchInputLayout.layoutParams = layoutParams
+        }
+
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    supportFragmentManager.commit {
+                        replace(binding.fragmentItems.id, ItemsFragment())
+                    }
+                    show()
+                    true
+                }
+
+                R.id.nav_orders -> {
+                    supportFragmentManager.commit {
+                        replace(binding.fragmentItems.id, OrdersFragment())
+                    }
+                    true
+                }
+
+                R.id.nav_products -> {
+                    supportFragmentManager.commit {
+                        replace(binding.fragmentItems.id, MyProductsFragment())
+                    }
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 
@@ -145,8 +186,10 @@ class HomeActivity : AppCompatActivity() {
         when (themePref) {
             AppCompatDelegate.MODE_NIGHT_YES ->
                 menu.findItem(R.id.menu_theme_dark).icon = checkIcon
+
             AppCompatDelegate.MODE_NIGHT_NO ->
                 menu.findItem(R.id.menu_theme_light).icon = checkIcon
+
             else ->
                 menu.findItem(R.id.menu_theme_system).icon = checkIcon
         }
@@ -173,5 +216,25 @@ class HomeActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(mode)
         editor.putInt("theme", mode)
         editor.apply()
+    }
+
+    override fun hide(title: String) {
+        binding.toolbar.title = title
+        binding.collapsingToolbarLayout.title = title
+        binding.appBarLayout.setExpanded(false, false)
+        binding.scrollView.isNestedScrollingEnabled = false
+
+        binding.searchInputLayout.visibility = android.view.View.INVISIBLE
+        binding.fragmentTopItems.visibility = android.view.View.INVISIBLE
+    }
+
+    override fun show() {
+        binding.toolbar.title = " "
+        binding.collapsingToolbarLayout.title = ""
+        binding.appBarLayout.setExpanded(true, false)
+        binding.scrollView.isNestedScrollingEnabled = true
+
+        binding.searchInputLayout.visibility = android.view.View.VISIBLE
+        binding.fragmentTopItems.visibility = android.view.View.VISIBLE
     }
 }
