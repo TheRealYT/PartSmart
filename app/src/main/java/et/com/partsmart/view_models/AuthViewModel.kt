@@ -89,6 +89,35 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private val _updateSuccess = MutableLiveData(false)
+    val updateSuccess: LiveData<Boolean> get() = _updateSuccess
+
+    fun updateUser(username: String, email: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+            _updateSuccess.value = false
+
+            try {
+                val response = Repository.updateUser(username, email)
+                if (response.isSuccessful && response.body()?.success == true) {
+                    prefs.edit()
+                        .putString(PREF_KEY_USERNAME, username)
+                        .putString(PREF_KEY_EMAIL, email)
+                        .apply()
+                    _updateSuccess.value = true
+                } else {
+                    _errorMessage.value =
+                        Repository.getErrorMessage(response.errorBody(), getApplication())
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = handleException(e, getApplication())
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+
     fun clearError() {
         _errorMessage.value = null
     }
@@ -113,7 +142,6 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
             email = email
         )
     }
-
 
     fun logout() {
         prefs.edit().clear().apply()

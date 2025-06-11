@@ -107,4 +107,12 @@ object Repository {
     suspend fun getUserProducts(userId: String): Response<UserProductsResponse> {
         return api.getUserProducts(userId)
     }
+
+    suspend fun getProducts(): Response<UserProductsResponse> {
+        return api.getProducts()
+    }
+
+    suspend fun updateUser(username: String, email: String): Response<BaseResponse> {
+        return api.updateUser(mapOf("username" to username, "email" to email))
+    }
 }

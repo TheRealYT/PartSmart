@@ -40,4 +40,12 @@ interface ApiService {
     @GET("getUserProducts.php")
     @Headers("Auth: true")
     suspend fun getUserProducts(@Query("userId") userId: String): Response<UserProductsResponse>
+
+    @GET("searchProducts.php")
+    @Headers("Auth: true")
+    suspend fun getProducts(): Response<UserProductsResponse>
+
+    @POST("updateUserProfile.php")
+    @Headers("Auth: true")
+    suspend fun updateUser(@Body update: Map<String, String>): Response<BaseResponse>
 }

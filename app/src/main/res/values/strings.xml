@@ -71,4 +71,7 @@
     <string name="condition">Condition</string>
     <string name="select_image">Select Image</string>
     <string name="upload">Upload</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="save">Save</string>
+    <string name="account_updated">Account updated</string>
 </resources>
