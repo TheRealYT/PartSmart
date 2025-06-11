@@ -57,4 +57,7 @@
     <string name="fab_cart">Cart</string>
     <string name="account">Account</string>
     <string name="search">Search</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_orders">Orders</string>
+    <string name="nav_my_products">My Products</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import et.com.partsmart.databinding.FragmentTopItemsBinding
 import et.com.partsmart.models.CardItem
+import et.com.partsmart.models.adapter.CardAdapter
 
 class TopItemsFragment : Fragment() {
     private var _binding: FragmentTopItemsBinding? = null

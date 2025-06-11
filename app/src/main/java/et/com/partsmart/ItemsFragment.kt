@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import et.com.partsmart.databinding.FragmentItemsBinding
 import et.com.partsmart.models.GridItem
+import et.com.partsmart.models.adapter.GridAdapter
 
 class ItemsFragment : Fragment() {
     private var _binding: FragmentItemsBinding? = null

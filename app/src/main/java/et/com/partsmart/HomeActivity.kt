@@ -3,12 +3,9 @@ package et.com.partsmart
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -17,10 +14,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import et.com.partsmart.databinding.ActivityHomeBinding
-import et.com.partsmart.models.CardItem
-import et.com.partsmart.models.GridItem
 import et.com.partsmart.models.User
 import et.com.partsmart.view_models.AuthViewModel
 import kotlin.math.abs
@@ -138,45 +132,4 @@ class HomeActivity : AppCompatActivity() {
 
         editor.apply()
     }
-}
-
-class CardAdapter(private val items: List<CardItem>) :
-    RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
-
-    inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title: TextView = itemView.findViewById(R.id.cardTitle)
-        val subtitle: TextView = itemView.findViewById(R.id.cardSubtitle)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
-        return CardViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        val item = items[position]
-        holder.title.text = item.title
-        holder.subtitle.text = item.subtitle
-    }
-
-    override fun getItemCount() = items.size
-}
-
-class GridAdapter(private val items: List<GridItem>) :
-    RecyclerView.Adapter<GridAdapter.GridViewHolder>() {
-
-    inner class GridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val title = itemView.findViewById<TextView>(R.id.gridTitle)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_grid, parent, false)
-        return GridViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
-        holder.title.text = items[position].title
-    }
-
-    override fun getItemCount() = items.size
 }
