@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menu_logout"
-        android:title="@string/logout" />
-
-    <item
         android:id="@+id/menu_toggle_dark"
         android:title="@string/toggle_dark_mode" />
+    <group>
+        <item
+            android:id="@+id/menu_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="@string/logout" />
+    </group>
 </menu>

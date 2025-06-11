@@ -3,8 +3,13 @@ package et.com.partsmart
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +17,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import et.com.partsmart.databinding.ActivityHomeBinding
+import et.com.partsmart.models.CardItem
+import et.com.partsmart.models.GridItem
 import et.com.partsmart.models.User
 import et.com.partsmart.view_models.AuthViewModel
+import kotlin.math.abs
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -47,7 +59,72 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setSupportActionBar(binding.toolbar)
+        val horizontalRecycler = binding.horizontalList
+        val gridRecycler = binding.gridList
+
+        horizontalRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        gridRecycler.layoutManager = GridLayoutManager(this, 2)
+
+        val cards = listOf(
+            CardItem("Featured", "Top Pick"),
+            CardItem("Trending", "Hot Now"),
+            CardItem("Recommended", "For You"),
+            CardItem("New", "Just Dropped")
+        )
+
+        val gridItems = listOf(
+            GridItem("Item A"),
+            GridItem("Item B"),
+            GridItem("Item C"),
+            GridItem("Item D"),
+            GridItem("Item E"),
+            GridItem("Item F")
+        )
+
+        horizontalRecycler.adapter = CardAdapter(cards)
+        gridRecycler.adapter = GridAdapter(gridItems)
+
+        val snapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(horizontalRecycler)
+
+        binding.fab.setOnClickListener {
+            Toast.makeText(this, "FAB clicked!", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.appBarLayout.addOnOffsetChangedListener { appBar, verticalOffset ->
+            val totalScrollRange = appBar.totalScrollRange
+            val isCollapsed = abs(verticalOffset) == totalScrollRange
+
+            val layoutParams =
+                binding.searchInputLayout.layoutParams as ViewGroup.MarginLayoutParams
+
+            if (isCollapsed) {
+                // Smaller margins when collapsed
+                val marginPx = dpToPx(52)
+                layoutParams.setMargins(
+                    marginPx,
+                    layoutParams.topMargin,
+                    marginPx,
+                    layoutParams.bottomMargin
+                )
+            } else {
+                // Larger margins when expanded
+                val marginPx = dpToPx(16)
+                layoutParams.setMargins(
+                    marginPx,
+                    layoutParams.topMargin,
+                    marginPx,
+                    layoutParams.bottomMargin
+                )
+            }
+
+            binding.searchInputLayout.layoutParams = layoutParams
+        }
     }
+
+    private fun dpToPx(dp: Int): Int =
+        (dp * resources.displayMetrics.density).toInt()
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
@@ -92,4 +169,45 @@ class HomeActivity : AppCompatActivity() {
 
         editor.apply()
     }
+}
+
+class CardAdapter(private val items: List<CardItem>) :
+    RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
+
+    inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title: TextView = itemView.findViewById(R.id.cardTitle)
+        val subtitle: TextView = itemView.findViewById(R.id.cardSubtitle)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_card, parent, false)
+        return CardViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+        val item = items[position]
+        holder.title.text = item.title
+        holder.subtitle.text = item.subtitle
+    }
+
+    override fun getItemCount() = items.size
+}
+
+class GridAdapter(private val items: List<GridItem>) :
+    RecyclerView.Adapter<GridAdapter.GridViewHolder>() {
+
+    inner class GridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val title = itemView.findViewById<TextView>(R.id.gridTitle)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_grid, parent, false)
+        return GridViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: GridViewHolder, position: Int) {
+        holder.title.text = items[position].title
+    }
+
+    override fun getItemCount() = items.size
 }
