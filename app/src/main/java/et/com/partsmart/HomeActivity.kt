@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -110,6 +111,7 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
                         replace(binding.fragmentItems.id, ItemsFragment())
                     }
                     show()
+                    binding.fabProduct.hide()
                     true
                 }
 
@@ -117,6 +119,7 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
                     supportFragmentManager.commit {
                         replace(binding.fragmentItems.id, OrdersFragment())
                     }
+                    binding.fabProduct.hide()
                     true
                 }
 
@@ -124,10 +127,17 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
                     supportFragmentManager.commit {
                         replace(binding.fragmentItems.id, MyProductsFragment())
                     }
+                    binding.fabProduct.show()
                     true
                 }
 
                 else -> false
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this) {
+            if (onBack()) {
+                finish()
             }
         }
     }
@@ -241,7 +251,7 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
         binding.fragmentTopItems.visibility = android.view.View.VISIBLE
     }
 
-    override fun onNavigateUp(): Boolean {
+    private fun onBack(): Boolean {
         val currentFragment = supportFragmentManager.findFragmentById(binding.fragmentItems.id)
         if (currentFragment is OrdersFragment || currentFragment is MyProductsFragment) {
             supportFragmentManager.commit {
@@ -253,6 +263,6 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
             return false
         }
 
-        return super.onNavigateUp()
+        return true
     }
 }
