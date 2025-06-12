@@ -19,6 +19,8 @@ class GridAdapter(
 ) :
     RecyclerView.Adapter<GridAdapter.GridViewHolder>() {
 
+    private var fullList = items.toMutableList()
+
     inner class GridViewHolder(private val binding: ItemGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -51,6 +53,18 @@ class GridAdapter(
 
     fun updateData(newList: List<Product>) {
         items = newList
+        fullList = items.toMutableList()
+        notifyDataSetChanged()
+    }
+
+    fun filter(query: String) {
+        items = if (query.isEmpty()) {
+            fullList
+        } else {
+            fullList.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+        }
         notifyDataSetChanged()
     }
 }

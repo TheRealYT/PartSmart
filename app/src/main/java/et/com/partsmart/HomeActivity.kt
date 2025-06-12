@@ -16,6 +16,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.badge.BadgeDrawable
@@ -99,6 +100,16 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
 
         binding.toolbar.setNavigationOnClickListener {
             AccountDialogFragment.show(supportFragmentManager)
+        }
+
+        binding.searchInput.addTextChangedListener {
+            if (it != null) {
+                val currentFragment =
+                    supportFragmentManager.findFragmentById(binding.fragmentItems.id)
+                if (currentFragment is ItemsFragment) {
+                    currentFragment.filter(it.toString())
+                }
+            }
         }
 
         binding.appBarLayout.addOnOffsetChangedListener { appBar, verticalOffset ->

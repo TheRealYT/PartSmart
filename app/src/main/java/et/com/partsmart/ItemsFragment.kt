@@ -49,4 +49,8 @@ class ItemsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    fun filter(keyword: String) {
+        adapter.filter(keyword)
+    }
 }
