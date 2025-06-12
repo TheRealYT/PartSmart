@@ -88,6 +88,11 @@ class AccountDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         fun show(manager: FragmentManager) {
             AccountDialogFragment().show(manager, "AccountDialogFragment")
