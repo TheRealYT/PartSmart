@@ -3,7 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="32dp">
+
+    <TextView
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/cart" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartList"
@@ -20,4 +27,11 @@
         android:textStyle="bold"
         android:gravity="end"
         android:padding="16dp" />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/checkout" />
 </LinearLayout>

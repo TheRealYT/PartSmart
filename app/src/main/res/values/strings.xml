@@ -78,6 +78,10 @@
     <string name="etb">ETB%1$s</string>
     <string name="price_etb">Price: ETB%1$s</string>
     <string name="msg_welcome">Welcome to PartSmart</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="cancel">Cancel</string>
+    <string name="cart">Cart</string>
+    <string name="checkout">Checkout</string>
 
     <string-array name="conditions">
         <item>new</item>

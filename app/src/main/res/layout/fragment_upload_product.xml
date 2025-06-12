@@ -18,6 +18,13 @@
             android:orientation="vertical"
             android:padding="24dp">
 
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/add_product" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.Material3.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
@@ -65,6 +72,7 @@
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/categoryInput"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/categories" />
@@ -77,13 +85,14 @@
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/conditionInput"
+                style="@style/Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:entries="@array/conditions" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/selectImageButton"
-                style="@style/Widget.Material3.Button"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

@@ -55,6 +55,10 @@ class AccountDialogFragment : DialogFragment() {
             }
         }
 
+        binding.cancelButton.setOnClickListener {
+            dismiss()
+        }
+
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             if (it != null) Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         }
@@ -77,12 +81,12 @@ class AccountDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
-            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             setWindowAnimations(android.R.style.Animation_Dialog)
             decorView.setPadding(0, 0, 0, 0)
             val params = attributes
             params.width = ViewGroup.LayoutParams.MATCH_PARENT
-            params.height = ViewGroup.LayoutParams.MATCH_PARENT
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
             params.gravity = Gravity.CENTER
             attributes = params
         }
