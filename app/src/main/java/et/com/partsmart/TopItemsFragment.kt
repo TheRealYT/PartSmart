@@ -30,10 +30,10 @@ class TopItemsFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         val cards = listOf(
-            CardItem("Featured", "Top Pick"),
-            CardItem("Trending", "Hot Now"),
-            CardItem("Recommended", "For You"),
-            CardItem("New", "Just Dropped")
+            CardItem("Featured", "Top Pick", R.drawable.img_featured),
+            CardItem("Trending", "Hot Now", R.drawable.img_trending),
+            CardItem("Recommended", "For You", R.drawable.img_recommended),
+            CardItem("New", "Just Dropped", R.drawable.img_new)
         )
 
         horizontalRecycler.adapter = CardAdapter(cards)
