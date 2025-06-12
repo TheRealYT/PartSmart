@@ -74,4 +74,7 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="save">Save</string>
     <string name="account_updated">Account updated</string>
+    <string name="total_etb">Total: ETB%1$s</string>
+    <string name="etb">ETB%1$s</string>
+    <string name="price_etb">Price: ETB%1$s</string>
 </resources>

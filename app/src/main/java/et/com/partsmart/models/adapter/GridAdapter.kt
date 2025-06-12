@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import et.com.partsmart.R
 import et.com.partsmart.api.BASE_URL
 import et.com.partsmart.databinding.ItemGridBinding
 import et.com.partsmart.models.CartItem
@@ -23,7 +24,7 @@ class GridAdapter(
 
         fun bind(item: Product) {
             binding.productName.text = item.name
-            binding.productPrice.text = "$${item.price}"
+            binding.productPrice.text = context.getString(R.string.etb, item.price)
 
             Glide.with(itemView.context)
                 .load("$BASE_URL${item.image}")

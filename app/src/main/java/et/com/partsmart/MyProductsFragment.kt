@@ -29,7 +29,7 @@ class MyProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val userId = (activity as HomeActivity).user.id
 
-        val adapter = ProductAdapter(emptyList())
+        val adapter = ProductAdapter(requireContext(), emptyList())
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())

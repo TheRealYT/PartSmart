@@ -1,5 +1,6 @@
 package et.com.partsmart.models.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import et.com.partsmart.api.BASE_URL
 import et.com.partsmart.models.Product
 
 class ProductAdapter(
+    private val context: Context,
     var products: List<Product>
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
@@ -23,7 +25,7 @@ class ProductAdapter(
 
         fun bind(product: Product) {
             nameText.text = product.name
-            priceText.text = "$${product.price}"
+            priceText.text = context.getString(R.string.etb, product.price)
             categoryText.text = product.category
 
             Glide.with(itemView.context)
