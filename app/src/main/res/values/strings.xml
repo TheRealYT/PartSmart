@@ -82,6 +82,7 @@
     <string name="cancel">Cancel</string>
     <string name="cart">Cart</string>
     <string name="checkout">Checkout</string>
+    <string name="order">Order #%1$s</string>
 
     <string-array name="conditions">
         <item>new</item>

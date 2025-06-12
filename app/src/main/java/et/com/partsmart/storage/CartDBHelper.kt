@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import et.com.partsmart.models.CartItem
 
 private const val CART = "cart"
+private const val CHECKOUT = "checkout"
+private const val CHECKOUT_ITEMS = "checkout_items"
 
 class CartDBHelper(context: Context) : SQLiteOpenHelper(context, "cart.db", null, 1) {
     override fun onCreate(db: SQLiteDatabase) {
@@ -21,10 +23,37 @@ class CartDBHelper(context: Context) : SQLiteOpenHelper(context, "cart.db", null
             )
         """.trimIndent()
         )
+
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS $CHECKOUT (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT,
+                total REAL
+            )
+        """.trimIndent()
+        )
+
+        db.execSQL(
+            """
+            CREATE TABLE IF NOT EXISTS $CHECKOUT_ITEMS (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                checkout_id INTEGER,
+                product_id INTEGER,
+                name TEXT,
+                image TEXT,
+                price REAL,
+                quantity INTEGER,
+                FOREIGN KEY(checkout_id) REFERENCES checkout(id)
+            )
+        """.trimIndent()
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS $CART")
+        db.execSQL("DROP TABLE IF EXISTS $CHECKOUT")
+        db.execSQL("DROP TABLE IF EXISTS $CHECKOUT_ITEMS")
         onCreate(db)
     }
 
@@ -110,4 +139,42 @@ class CartDBHelper(context: Context) : SQLiteOpenHelper(context, "cart.db", null
         writableDatabase.execSQL("DELETE FROM $CART")
     }
 
+    fun checkout(): Long {
+        val db = writableDatabase
+        val cartItems = getAllCart()
+        if (cartItems.isEmpty()) return -1
+
+        val total = cartItems.sumOf { it.price * it.quantity }
+        val values = ContentValues().apply {
+            put("timestamp", System.currentTimeMillis().toString())
+            put("total", total)
+        }
+        val checkoutId = db.insert("checkout", null, values)
+
+        cartItems.forEach {
+            val itemValues = ContentValues().apply {
+                put("checkout_id", checkoutId)
+                put("product_id", it.id)
+                put("name", it.name)
+                put("image", it.image)
+                put("price", it.price)
+                put("quantity", it.quantity)
+            }
+            db.insert("checkout_items", null, itemValues)
+        }
+
+        clearCart()
+        return checkoutId
+    }
+
+    fun getCheckouts(): List<Pair<Long, Double>> {
+        val result = mutableListOf<Pair<Long, Double>>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT id, total FROM checkout ORDER BY id DESC", null)
+        while (cursor.moveToNext()) {
+            result.add(cursor.getLong(0) to cursor.getDouble(1))
+        }
+        cursor.close()
+        return result
+    }
 }

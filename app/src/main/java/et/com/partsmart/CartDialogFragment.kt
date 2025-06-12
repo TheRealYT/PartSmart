@@ -49,6 +49,11 @@ class CartDialogFragment : DialogFragment() {
             LinearLayoutManager(requireContext())
 
         binding.totalPrice.text = getString(R.string.total_etb, total.toString())
+
+        binding.checkoutBtn.setOnClickListener {
+            db.checkout()
+            dismiss()
+        }
     }
 
 

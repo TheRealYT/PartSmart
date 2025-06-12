@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import et.com.partsmart.api.Repository
 import et.com.partsmart.databinding.ActivityMainBinding
 import et.com.partsmart.view_models.AuthViewModel
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Repository.init(this)
         val prefs = getSharedPreferences("settings", MODE_PRIVATE)
         val themeMode = prefs.getInt("theme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         AppCompatDelegate.setDefaultNightMode(themeMode)
