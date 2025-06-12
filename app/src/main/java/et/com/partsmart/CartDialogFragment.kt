@@ -1,6 +1,7 @@
 package et.com.partsmart
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -74,5 +75,11 @@ class CartDialogFragment : DialogFragment() {
         fun show(manager: FragmentManager) {
             CartDialogFragment().show(manager, "CartDialogFragment")
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+
+        (activity as? HomeActivity)?.updateCartCount()
     }
 } 

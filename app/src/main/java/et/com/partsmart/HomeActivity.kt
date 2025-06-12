@@ -41,16 +41,20 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
     }
     private lateinit var token: String
     internal lateinit var user: User
-    private lateinit var badgeDrawable: BadgeDrawable
+    private var badgeDrawable: BadgeDrawable? = null
 
     @OptIn(ExperimentalBadgeUtils::class)
     internal fun updateCartCount() {
         val count = CartDBHelper(this).getCartCount()
-        badgeDrawable = BadgeDrawable.create(this)
-        badgeDrawable.number = count
-        badgeDrawable.isVisible = count > 0
 
-        BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.fab)
+        if (badgeDrawable != null)
+            BadgeUtils.detachBadgeDrawable(badgeDrawable, binding.fab)
+
+        badgeDrawable = BadgeDrawable.create(this)
+        badgeDrawable!!.number = count
+        badgeDrawable!!.isVisible = count > 0
+
+        BadgeUtils.attachBadgeDrawable(badgeDrawable!!, binding.fab)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
