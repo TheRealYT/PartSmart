@@ -1,10 +1,12 @@
 package et.com.partsmart
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -58,6 +60,7 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
         BadgeUtils.attachBadgeDrawable(badgeDrawable!!, binding.fab)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         Repository.init(this)
 
@@ -110,6 +113,18 @@ class HomeActivity : AppCompatActivity(), ManageAppBar {
                     currentFragment.filter(it.toString())
                 }
             }
+        }
+
+        binding.searchInput.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = 2  // index for right drawable
+                val drawable = binding.searchInput.compoundDrawables[drawableEnd]
+                if (drawable != null && event.rawX >= (binding.searchInput.right - drawable.bounds.width())) {
+                    binding.searchInput.text?.clear()
+                    binding.searchInput.clearFocus()
+                    true
+                } else false
+            } else false
         }
 
         binding.appBarLayout.addOnOffsetChangedListener { appBar, verticalOffset ->
