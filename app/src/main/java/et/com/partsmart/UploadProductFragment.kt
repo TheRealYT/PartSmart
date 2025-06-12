@@ -43,8 +43,8 @@ class UploadProductFragment : DialogFragment() {
             val name = binding.nameInput.text.toString().trim()
             val description = binding.descriptionInput.text.toString().trim()
             val price = binding.priceInput.text.toString().trim()
-            val category = binding.categoryInput.text.toString().trim()
-            val condition = binding.conditionInput.text.toString().trim()
+            val category = binding.categoryInput.selectedItem.toString().trim()
+            val condition = binding.conditionInput.selectedItem.toString().trim()
             val sellerId = (activity as HomeActivity).user.id
 
             if (name.isEmpty() || description.isEmpty() || price.isEmpty() ||

@@ -78,4 +78,17 @@
     <string name="etb">ETB%1$s</string>
     <string name="price_etb">Price: ETB%1$s</string>
     <string name="msg_welcome">Welcome to PartSmart</string>
+
+    <string-array name="conditions">
+        <item>new</item>
+        <item>old</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>engine</item>
+        <item>exterior</item>
+        <item>interior</item>
+        <item>electronics</item>
+        <item>other</item>
+    </string-array>
 </resources>
