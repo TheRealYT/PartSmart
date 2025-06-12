@@ -2,6 +2,7 @@ package et.com.partsmart.models.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,7 +15,8 @@ import et.com.partsmart.storage.CartDBHelper
 class CartAdapter(
     private val context: Context,
     private val items: MutableList<CartItem>,
-    private val onItemChanged: () -> Unit
+    private val hideButtons: Boolean,
+    private val onItemChanged: () -> Unit,
 ) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
@@ -33,6 +35,11 @@ class CartAdapter(
                 .into(binding.productImage)
 
             val db = CartDBHelper(binding.root.context)
+
+            if (hideButtons) {
+                binding.plusButton.visibility = View.GONE
+                binding.minusButton.visibility = View.GONE
+            }
 
             binding.plusButton.setOnClickListener {
                 item.quantity += 1

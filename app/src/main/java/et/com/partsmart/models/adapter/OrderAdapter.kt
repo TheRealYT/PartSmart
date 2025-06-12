@@ -7,7 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import et.com.partsmart.R
 import et.com.partsmart.databinding.ItemOrderBinding
 
-class OrderAdapter(private val context: Context, private val items: List<Pair<Long, Double>>) :
+class OrderAdapter(
+    private val context: Context,
+    private val items: List<Pair<Long, Double>>,
+    private val onItemClick: (Long) -> Unit
+) :
     RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
 
     inner class OrderViewHolder(private val binding: ItemOrderBinding) :
@@ -15,6 +19,10 @@ class OrderAdapter(private val context: Context, private val items: List<Pair<Lo
         fun bind(order: Pair<Long, Double>) {
             binding.orderId.text = context.getString(R.string.order, order.first.toString())
             binding.totalPrice.text = context.getString(R.string.total_etb, order.second.toString())
+
+            binding.root.setOnClickListener {
+                onItemClick(order.first)
+            }
         }
     }
 

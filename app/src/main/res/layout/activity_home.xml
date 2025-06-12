@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/baseline_search_24"
-                    android:drawableEnd="@drawable/baseline_remove_24"
+                    android:drawableEnd="@android:drawable/ic_menu_close_clear_cancel"
                     android:drawablePadding="8dp"
                     android:drawableTint="?android:attr/textColorPrimary"
                     android:inputType="text"

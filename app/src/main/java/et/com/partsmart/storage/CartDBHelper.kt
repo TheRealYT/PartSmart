@@ -43,8 +43,7 @@ class CartDBHelper(context: Context) : SQLiteOpenHelper(context, "cart.db", null
                 name TEXT,
                 image TEXT,
                 price REAL,
-                quantity INTEGER,
-                FOREIGN KEY(checkout_id) REFERENCES checkout(id)
+                quantity INTEGER
             )
         """.trimIndent()
         )
@@ -176,5 +175,38 @@ class CartDBHelper(context: Context) : SQLiteOpenHelper(context, "cart.db", null
         }
         cursor.close()
         return result
+    }
+
+    fun getCheckoutTotal(id: Int): Double {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT total FROM checkout WHERE id = ?", arrayOf(id.toString()))
+        var total = 0.0
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(0)
+        }
+        cursor.close()
+        return total
+    }
+
+    fun getCardItemsForCheckout(checkoutId: Long): List<CartItem> {
+        val db = readableDatabase
+        val items = mutableListOf<CartItem>()
+        val cursor = db.rawQuery(
+            """
+        SELECT id, name, image, price, quantity
+        FROM checkout_items WHERE checkout_id = ?
+          """.trimIndent(), arrayOf(checkoutId.toString())
+        )
+
+        while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+            val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+            val image = cursor.getString(cursor.getColumnIndexOrThrow("image"))
+            val price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"))
+            val quantity = cursor.getInt(cursor.getColumnIndexOrThrow("quantity"))
+            items.add(CartItem(id.toString(), name, image, price, quantity))
+        }
+        cursor.close()
+        return items
     }
 }

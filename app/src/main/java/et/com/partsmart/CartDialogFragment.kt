@@ -39,7 +39,7 @@ class CartDialogFragment : DialogFragment() {
         val cartItems = db.getAllCart().toMutableList()
         var total = db.getTotalCost()
 
-        val adapter = CartAdapter(requireContext(), cartItems) {
+        val adapter = CartAdapter(requireContext(), cartItems, false) {
             total = db.getTotalCost()
             binding.totalPrice.text = getString(R.string.total_etb, total.toString())
         }
